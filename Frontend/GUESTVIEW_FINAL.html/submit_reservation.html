@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Reservation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white shadow-lg rounded-lg p-8 max-w-2xl w-full">
+    <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Hotel Reservation System</h1>
+
+    <!-- Combined Form for Reservation -->
+    <h2 class="text-xl font-semibold mb-4 text-gray-700">Create a Reservation</h2>
+    <form id="combined-form" class="space-y-6">
+      
+      <!-- Hotel and Room Selection -->
+      <div>
+        <h3 class="text-lg font-medium text-gray-700 mb-2">Hotel and Room Selection</h3>
+        <div class="space-y-4">
+          <div>
+            <label for="hotelID" class="block text-sm font-medium text-gray-600">Hotel</label>
+            <input 
+              type="text" 
+              id="hotelID" 
+              name="hotelID" 
+              class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-300 bg-gray-100" 
+              readonly>
+          </div>
+          <div>
+            <label for="roomID" class="block text-sm font-medium text-gray-600">Room</label>
+            <input 
+              type="text" 
+              id="roomID" 
+              name="roomID" 
+              class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-300 bg-gray-100" 
+              readonly>
+          </div>
+          <div>
+            <label for="room_status" class="block text-sm font-medium text-gray-600">Room Status</label>
+            <input 
+              type="text" 
+              id="room_status" 
+              name="room_status" 
+              class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-300 bg-gray-100" 
+              readonly>
+          </div>
+          <div>
+            <label for="room_type" class="block text-sm font-medium text-gray-600">Room Type</label>
+            <input 
+              type="text" 
+              id="room_type" 
+              name="room_type" 
+              class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-300 bg-gray-100" 
+              readonly>
+          </div>
+        </div>
+      </div>
+
+      <!-- Guest and Reservation Details -->
+      <div>
+        <h3 class="text-lg font-medium text-gray-700 mb-2">Guest and Reservation Details</h3>
+        <div class="space-y-4">
+          <div>
+            <label for="guestID" class="block text-sm font-medium text-gray-600">Guest Name</label>
+            <input 
+              type="text" 
+              id="guestID" 
+              name="guestID" 
+              class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-300 bg-gray-100" 
+              readonly>
+          </div>
+          
+          <div>
+            <label for="check_in_date" class="block text-sm font-medium text-gray-600">Check-in Date</label>
+            <input 
+              type="date" 
+              id="check_in_date" 
+              name="check_in_date" 
+              class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-300" 
+              required>
+          </div>
+          <div>
+            <label for="check_out_date" class="block text-sm font-medium text-gray-600">Check-out Date</label>
+            <input 
+              type="date" 
+              id="check_out_date" 
+              name="check_out_date" 
+              class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-300" 
+              required>
+          </div>
+          <div>
+            <label for="total_price" class="block text-sm font-medium text-gray-600">Total Price</label>
+            <input 
+              type="text" 
+              id="total_price" 
+              name="total_price" 
+              class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-300 bg-gray-100" 
+              readonly>
+          </div>
+          <div>
+            <label for="reservation_status" class="block text-sm font-medium text-gray-600">Reservation Status</label>
+            <input 
+              type="text" 
+              id="reservation_status" 
+              name="reservation_status" 
+              value="Pending" 
+              class="w-full border border-gray-300 rounded-lg p-2 bg-gray-100 focus:outline-none cursor-not-allowed" 
+              readonly>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        type="submit" 
+        class="w-full bg-blue-600 text-white font-medium py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
+        Submit
+      </button>
+    </form>
+
+    <div id="result" class="mt-4 text-red-500"></div>
+  </div>
+  <script src="reservation.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Login</title>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="container max-w-md bg-white shadow-lg rounded-lg p-6">
+        <h1 class="text-3xl font-bold text-center mb-4">Welcome</h1>
+        <div class="form-container">
+            <!-- Login Form -->
+            <form id="login-form" class="form space-y-4">
+                <h2 class="text-xl font-semibold text-gray-700">Login</h2>
+                <input 
+                    type="email" 
+                    id="email" 
+                    placeholder="Email" 
+                    required 
+                    class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                >
+                <input 
+                    type="password" 
+                    id="password" 
+                    placeholder="Password" 
+                    required 
+                    class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                >
+                <button 
+                    type="submit" 
+                    class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
+                >
+                    Login
+                </button>
+                <p class="text-gray-600 text-sm text-center">
+                    Don't have an account? 
+                    <a href="signup.html" class="text-blue-500 hover:underline">Sign Up</a>
+                </p>
+            </form>
+            <p id="message" class="text-red-500 text-center mt-4"></p>
+        </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>
