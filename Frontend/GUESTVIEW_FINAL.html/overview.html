@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservation Overview</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 dark:bg-gray-800 dark:text-gray-200 min-h-screen">
+  <!-- Navbar -->
+  <div class="bg-white dark:bg-gray-900 shadow-md py-4 px-8 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Reservation Overview</h1>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-4 py-10">
+    <div class="bg-white dark:bg-gray-900 shadow-lg rounded-lg p-8 max-w-3xl mx-auto">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-6 text-center">Your Reservation Details</h2>
+
+      <!-- Reservation Details -->
+      <div id="reservation-details" aria-live="polite" class="space-y-6">
+        <p class="text-center text-gray-600 dark:text-gray-400">Loading reservation details...</p>
+      </div>
+
+      <!-- Dynamic Details Section -->
+      <div id="details-container" class="hidden space-y-8">
+        <!-- Hotel Info -->
+        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l-4-4m0 0l4-4m-4 4h16" />
+            
+            Hotel Information
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400 mt-2">Hotel Name: <span id="hotel-name" class="font-medium text-gray-800 dark:text-gray-100"></span></p>
+          <p class="text-gray-600 dark:text-gray-400 mt-2">Hotel Address: <span id="hotel-address" class="font-medium text-gray-800 dark:text-gray-100"></span></p>
+          <p class="text-gray-600 dark:text-gray-400 mt-2">Room Number: <span id="room-number" class="font-medium text-gray-800 dark:text-gray-100"></span></p>
+        </div>
+
+        <!-- Reservation Info -->
+        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Reservation Information</h3>
+          <p class="text-gray-600 dark:text-gray-400 mt-2">Reservation ID: <span id="reservation-id" class="font-medium text-gray-800 dark:text-gray-100"></span></p>
+          <p class="text-gray-600 dark:text-gray-400 mt-2">Check-in Date: <span id="check-in" class="font-medium text-gray-800 dark:text-gray-100"></span></p>
+          <p class="text-gray-600 dark:text-gray-400 mt-2">Check-out Date: <span id="check-out" class="font-medium text-gray-800 dark:text-gray-100"></span></p>
+        </div>
+
+        <!-- Payment Info -->
+        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Payment Information</h3>
+          <p class="text-gray-600 dark:text-gray-400 mt-2">Amount Paid: <span id="amount-paid" class="font-medium text-gray-800 dark:text-gray-100"></span></p>
+        </div>
+      </div>
+
+      <!-- Loading Indicator -->
+      <div id="loading-indicator" class="flex justify-center items-center my-6 hidden">
+        <svg class="animate-spin h-8 w-8 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+        </svg>
+      </div>
+
+      <!-- Return to Dashboard Button -->
+      <div class="mt-8 text-center">
+        <button 
+          id="dashboard-button"
+          aria-label="Return to Dashboard"
+          class="hidden bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600"
+          onclick="redirectToDashboard()">
+          Go to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+<script src="overview.js"></script>
+</body>
+</html>

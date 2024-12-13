@@ -88,7 +88,7 @@ if (!window.signupFormListenerAdded) {
             }
         } finally {
             resetState();
-            window.location.href = "index.html"; // Redirect regardless of outcome
+            window.location.href = "login.html"; // Redirect regardless of outcome
         }
 
         function resetState() {

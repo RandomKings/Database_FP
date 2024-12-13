@@ -1,5 +1,3 @@
-// payments.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const paymentForm = document.getElementById('paymentForm');
     const amountPayingInput = document.getElementById('amountPaying');
@@ -62,12 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Prepare the payment data to send to the API
         const paymentData = {
-            reservationID: reservationID, // Matches `PaymentCreate` schema
-            amount_paid: parseFloat(amountPayingInput.value), // Ensure it's a number
-            payment_method: paymentMethod, // Matches expected values: Credit Card, Debit Card, Cash, Online
-            payment_date: paymentDate, // Add the current date
+            reservationID: reservationID,
+            amount_paid: parseFloat(amountPayingInput.value),
+            payment_method: paymentMethod,
+            payment_date: paymentDate,
         };
-        console.log(paymentData)
+
         try {
             // Post the payment data to the /payments/ endpoint
             const response = await fetch('http://localhost:8000/payments/', {
@@ -84,12 +82,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const result = await response.json();
-            console.log(result)
+
+            // Log the payment response for debugging
+            console.log('Payment Result:', result);
+
+            // Display success message
             statusMessage.textContent = `Payment successful! Transaction ID: ${result.paymentID}`;
             statusMessage.style.color = 'green';
 
-            // Optionally, you can redirect or clear the form
-            paymentForm.reset();
+            // Redirect to the reservation overview page with paymentID in the query string
+            window.location.href = `overview.html?payment_id=${result.paymentID}`;
         } catch (error) {
             statusMessage.textContent = error.message;
             statusMessage.style.color = 'red';

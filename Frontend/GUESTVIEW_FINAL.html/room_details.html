@@ -3,17 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Select a Room</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="mx-16">
-        <h1 class="text-2xl font-bold text-black mb-10">Select a Room</h1>
+<body class="bg-gray-100">
+    <!-- Navbar with Back Button -->
+    <div class="bg-white shadow-md py-4 px-8 flex justify-between items-center">
+        <!-- Back Button -->
+        <button 
+            class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition-colors"
+            onclick="location.href='select_hotels.html'"
+        >
+            ← Back
+        </button>
+        <h1 class="text-2xl font-bold text-gray-800">Select a Room</h1>
+        <!-- Empty space for alignment -->
+        <div></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-16 py-10">
         <div class="flex flex-wrap gap-16 items-center justify-center" id="room-list">
             <!-- Room cards will be dynamically generated here -->
         </div>
     </div>
+
     <script src="rooms.js"></script>
 </body>
 </html>

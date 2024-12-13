@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Dashboard</title>
+</head>
+<body class="bg-gray-100 h-screen">
+    <!-- Navbar -->
+    <div class="bg-white shadow-md py-4 px-8 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+        <button 
+            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex flex-col items-center justify-center h-full space-y-6">
+        <!-- Book Hotel Button -->
+        <button 
+            class="bg-blue-500 text-white px-8 py-4 rounded-lg text-xl shadow-md hover:bg-blue-600 transition-all"
+            onclick="location.href='select_hotels.html'"
+        >
+            Book Hotel
+        </button>
+
+        <!-- My Reservations Button -->
+        <button 
+            class="bg-green-500 text-white px-8 py-4 rounded-lg text-xl shadow-md hover:bg-green-600 transition-all"
+            onclick="location.href='my_reservations.html'"
+        >
+            My Reservations
+        </button>
+    </div>
+
+    <script>
+        // Function to handle logout
+        function logout() {
+            // Redirect to login page or handle logout logic
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

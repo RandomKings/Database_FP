@@ -7,8 +7,22 @@
     <title>Select Hotels</title>
 </head>
 <body class="bg-gray-100">
+    <!-- Navbar with Back Button -->
+    <div class="bg-white shadow-md py-4 px-8 flex justify-between items-center">
+        <!-- Back Button -->
+        <button 
+            class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition-colors"
+            onclick="location.href='dashboard.html'"
+        >
+            ← Back
+        </button>
+        <h1 class="text-2xl font-bold text-gray-800">Select Hotels</h1>
+        <!-- Empty space for alignment -->
+        <div></div>
+    </div>
+
+    <!-- Main Content -->
     <div class="container mx-auto px-16 py-10">
-        <h1 class="text-2xl font-bold text-black mb-10">Select a Hotel</h1>
         <div class="flex flex-wrap gap-16 items-center justify-center" id="hotel-list">
             <!-- Hotel cards will be dynamically generated here -->
         </div>

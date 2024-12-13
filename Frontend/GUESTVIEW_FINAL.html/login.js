@@ -58,7 +58,7 @@ if (!window.loginFormListenerAdded) {
             
             // Redirect to dashboard or desired page
             messageElement.textContent = "Login successful!";
-            window.location.href = "select_hotels.html";
+            window.location.href = "dashboard.html";
 
         } catch (error) {
             console.error("Error during login:", error);

@@ -58,27 +58,36 @@ async function generateRoomCards() {
         const roomDetails = await fetchRoomDetailsByType(roomType.room_type);
         if (!roomDetails) continue;
 
+        // Check if the room is booked or available
+        const isBooked = roomType.status.toLowerCase() === 'booked';
+
         // Create a room card for each room type
         const roomCard = document.createElement('div');
         roomCard.className = 'room-card bg-white rounded-lg shadow-md py-10 px-20 hover:shadow-lg transition-shadow';
+
         roomCard.innerHTML = `
             <h2 class="text-xl font-semibold text-gray-800">${roomDetails.roomType}</h2>
             <p class="text-gray-600 mt-2">Price: <span class="font-medium">$${roomDetails.price}/night</span></p>
             <p class="text-gray-600 mt-2">Bed Type: <span class="font-medium">${roomDetails.bed_type}</span></p>
             <p class="text-gray-600 mt-2">Capacity: <span class="font-medium">${roomDetails.max_occupancy} persons</span></p>
-            <button 
-                class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-                onclick="redirectToReservation(
-                    '${hotelId}', 
-                    '${roomType.roomID}', 
-                    '${roomDetails.roomType}', 
-                    '${roomType.status}', 
-                    ${roomDetails.price}
-                )"
-            >
-                Book Room
-            </button>
+            <p class="text-gray-600 mt-2">Status: <span class="font-medium ${isBooked ? 'text-red-500' : 'text-green-500'}">${roomType.status}</span></p>
         `;
+
+        // Add "Book Room" button only if the room is available
+        if (!isBooked) {
+            const bookButton = document.createElement('button');
+            bookButton.className = 'mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors';
+            bookButton.textContent = 'Book Room';
+            bookButton.onclick = () => redirectToReservation(
+                hotelId, 
+                roomType.roomID, 
+                roomDetails.roomType, 
+                roomType.status, 
+                roomDetails.price
+            );
+            roomCard.appendChild(bookButton);
+        }
+
         roomList.appendChild(roomCard);
     }
 }
@@ -93,7 +102,7 @@ function redirectToReservation(hotelId, roomId, roomType, roomStatus, price) {
         room_status: roomStatus,
         total_price: price
     });
-    window.location.href = `submit_reservation.html?${params.toString()}`;
+    window.location.href = `reservation.html?${params.toString()}`;
 }
 
 // Initialize room selection page
