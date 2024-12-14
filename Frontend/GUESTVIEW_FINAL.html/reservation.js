@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Step 3: Update Room Status
             const updateRoomResponse = await fetch(
-                `${apiBaseUrl}/change_room_status/${reservationRoomData.hotelID}/${reservationRoomData.roomID}?status=Booked`,
+                `${apiBaseUrl}/change_room_status/${reservationRoomData.hotelID}/${reservationRoomData.roomID}?status=Reserved`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },

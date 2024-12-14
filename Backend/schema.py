@@ -101,6 +101,11 @@ class ReservationResponse(ReservationBase):
 
     class Config:
         orm_mode = True
+class ReservationStatusUpdate(BaseModel):
+    reservation_status: str  # Ensure valid values
+
+    class Config:
+        orm_mode = True
 
 
 # -------- ReservationRooms Schema --------
@@ -114,6 +119,22 @@ class ReservationRoomCreate(ReservationRoomBase):
     pass  # For creating reservation-room mappings
 
 class ReservationRoomResponse(ReservationRoomBase):
+    class Config:
+        orm_mode = True
+
+class ReservationWithRoom(BaseModel):
+    reservationID: int
+    check_in_date: date
+    check_out_date: date
+    total_price: float
+    reservation_status: str
+    created_at: datetime
+    updated_at: datetime
+    roomID: int
+    hotelID: int
+    guestID: str
+    status:str
+
     class Config:
         orm_mode = True
 

@@ -246,6 +246,17 @@ async def update_reservation(reservation_id: int, updates: schema.ReservationCre
         raise HTTPException(status_code=404, detail="Reservation not found")
     return updated_reservation
 
+@app.put("/update_reservation_status/{reservation_id}", response_model=schema.ReservationResponse, tags=["Reservations"])
+async def update_reservation_status(reservation_id: int, status_update: schema.ReservationStatusUpdate, db: Session = Depends(get_db)):
+    # Call the CRUD function to update the status
+    updated_reservation = crud.update_reservation_status(db, reservation_id, status_update.reservation_status)
+
+    if not updated_reservation:
+        raise HTTPException(status_code=404, detail="Reservation not found")
+
+    return updated_reservation
+
+
 
 # Delete a Reservation
 @app.delete("/delete_reservations_by_id/{reservation_id}", response_model=schema.ReservationResponse, tags=["Reservations"])
@@ -269,6 +280,33 @@ async def get_reservation_rooms_by_reservation(reservation_id: int, db: Session 
     if not reservation_rooms:
         raise HTTPException(status_code=404, detail="No rooms found for this reservation")
     return reservation_rooms
+
+@app.get("/reservations/guest/{guest_id}", response_model=list[schema.ReservationWithRoom], tags=["Reservations"])
+async def get_reservations_by_guest_id(guest_id: str, db: Session = Depends(get_db)):
+
+    reservations = crud.get_reservations_by_guest_id(db, guest_id)
+    if not reservations:
+        raise HTTPException(status_code=404, detail="No reservations found for the specified guest ID.")
+
+    # Map the combined results into the new schema format
+    result = []
+    for reservation, room in reservations:
+        result.append(schema.ReservationWithRoom(
+            reservationID=reservation.reservationID,
+            check_in_date=reservation.check_in_date,
+            check_out_date=reservation.check_out_date,
+            total_price=reservation.total_price,
+            reservation_status=reservation.reservation_status,
+            created_at=reservation.created_at,
+            updated_at=reservation.updated_at,
+            roomID=room.roomID,
+            hotelID=room.hotelID,
+            guestID=room.guestID,
+            status=reservation.reservation_status
+        ))
+
+    return result
+
 
 
 # Delete a ReservationRoom
@@ -317,3 +355,11 @@ async def delete_payment(payment_id: int, db: Session = Depends(get_db)):
     if not deleted_payment:
         raise HTTPException(status_code=404, detail="Payment not found")
     return deleted_payment
+
+@app.post("/cancellations/", response_model=schema.CancellationResponse, tags=["Cancellations"])
+def create_cancellation(cancellation: schema.CancellationCreate, db: Session = Depends(get_db)):
+    try:
+        db_cancellation = crud.create_cancellation(db, cancellation)
+        return db_cancellation
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

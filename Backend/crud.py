@@ -276,6 +276,20 @@ def update_reservation(db: Session, reservation_id: int, updates: dict):
     db.refresh(reservation)
     return reservation
 
+def update_reservation_status(db: Session, reservation_id: int, new_status: str):
+    reservation = db.query(database.ReservationDetails).filter(
+        database.ReservationDetails.reservationID == reservation_id
+    ).first()
+
+    if not reservation:
+        return None
+
+    # Update the reservation status
+    reservation.reservation_status = new_status
+    db.commit()
+    db.refresh(reservation)
+    return reservation
+
 
 # Delete a Reservation
 def delete_reservation(db: Session, reservation_id: int):
@@ -307,6 +321,14 @@ def get_reservation_rooms_by_reservation(db: Session, reservation_id: int):
         database.ReservationRooms.reservationID == reservation_id
     ).all()
 
+def get_reservations_by_guest_id(db: Session, guest_id: str):
+  
+    return (
+        db.query(database.ReservationDetails, database.ReservationRooms)
+        .join(database.ReservationRooms, database.ReservationRooms.reservationID == database.ReservationDetails.reservationID)
+        .filter(database.ReservationRooms.guestID == guest_id)
+        .all()
+    )
 
 # Delete a ReservationRoom
 def delete_reservation_room(db: Session, reservation_id: int, room_id: int, hotel_id: int):
@@ -360,3 +382,15 @@ def delete_payment(db: Session, payment_id: int):
     db.delete(payment)
     db.commit()
     return payment
+
+def create_cancellation(db: Session, cancellation: schema.CancellationCreate):
+    
+    db_cancellation = database.Cancellations(
+        cancellation_date=cancellation.cancellation_date,
+        reason=cancellation.reason,
+        reservationID=cancellation.reservationID,
+    )
+    db.add(db_cancellation)
+    db.commit()
+    db.refresh(db_cancellation)
+    return db_cancellation
