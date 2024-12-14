@@ -53,7 +53,7 @@ if (!window.signupFormListenerAdded) {
 
             // Prepare data for the API
             const guestData = {
-                guest_id: guestID,
+                guestID: guestID,
                 first_name: formData.first_name,
                 last_name: formData.last_name,
                 email: formData.email,
