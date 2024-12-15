@@ -1,4 +1,4 @@
-// Firebase configuration
+
 const apiBaseUrl = "http://localhost:8000";
 const firebaseConfig = {
     apiKey: "AIzaSyBfjOkpEgJ_NnE2keqP5dB2LHPyp3bGsQ8",
@@ -9,25 +9,24 @@ const firebaseConfig = {
     appId: "1:203684596661:web:d5ea0c48bca5e1865e67fc"
 };
 
-// Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const auth = app.auth(); // Initialize auth
 
-// Prevent duplicate event listeners
+const app = firebase.initializeApp(firebaseConfig);
+const auth = app.auth(); 
+
 if (!window.signupFormListenerAdded) {
     window.signupFormListenerAdded = true;
 
-    let isSubmitting = false; // Guard for duplicate submissions
+    let isSubmitting = false; 
 
     document.getElementById('signup-form').addEventListener('submit', async (event) => {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault(); 
 
-        if (isSubmitting) return; // Block duplicate submissions
+        if (isSubmitting) return; 
         isSubmitting = true;
 
         const submitButton = document.querySelector('button[type="submit"]');
         const messageElement = document.getElementById('message');
-        submitButton.disabled = true; // Disable submit button
+        submitButton.disabled = true; 
         
         const formData = {
             first_name: document.getElementById('first-name').value.trim(),
@@ -39,7 +38,7 @@ if (!window.signupFormListenerAdded) {
             password: document.getElementById('password').value.trim()
         };
 
-        // Basic validation
+        
         if (Object.values(formData).some(value => !value)) {
             messageElement.textContent = "Please fill in all fields.";
             resetState();
@@ -51,7 +50,7 @@ if (!window.signupFormListenerAdded) {
             const userCredential = await auth.createUserWithEmailAndPassword(formData.email, formData.password);
             const guestID = userCredential.user.uid;
 
-            // Prepare data for the API
+            // Prepare data fro the database
             const guestData = {
                 guestID: guestID,
                 first_name: formData.first_name,
@@ -62,7 +61,7 @@ if (!window.signupFormListenerAdded) {
                 date_of_birth: formData.date_of_birth
             };
 
-            // Send data to the server
+            // creating guest in database
             const response = await fetch(`${apiBaseUrl}/create_guests/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -88,7 +87,7 @@ if (!window.signupFormListenerAdded) {
             }
         } finally {
             resetState();
-            window.location.href = "login.html"; // Redirect regardless of outcome
+            window.location.href = "login.html";
         }
 
         function resetState() {

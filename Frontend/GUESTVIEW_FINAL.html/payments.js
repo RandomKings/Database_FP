@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusMessage = document.getElementById('statusMessage');
     const apiBaseUrl = "http://localhost:8000";
 
-    // Retrieve reservationID from URL
+   
     const urlParams = new URLSearchParams(window.location.search);
     const reservationID = urlParams.get('reservationID');
 
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // Fetch the reservation details from the API
+    //get the reservation details for payment
     async function fetchReservationDetails() {
         try {
             const response = await fetch(`${apiBaseUrl}/get_reservations_by_id/${reservationID}`);
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Handle form submission
+  
     paymentForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const paymentMethod = paymentMethodSelect.value;
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            // Post payment data to the API
+            // put the payment data into the database
             const response = await fetch(`${apiBaseUrl}/payments/`, {
                 method: 'POST',
                 headers: {
@@ -148,17 +148,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const paymentResult = await response.json();
             console.log('Payment Result:', paymentResult);
 
-            // Update room status to "Booked"
+            
             await updateRoomStatusToBooked(reservationID);
 
-            // Update reservation status to Confirmed (only after payment and room status update)
+            
             await updateReservationStatus(reservationID);
 
-            // Display success message
+            
             statusMessage.textContent = `Payment successful! Transaction ID: ${paymentResult.paymentID}`;
             statusMessage.style.color = 'green';
 
-            // Redirect to overview.html
+            
             window.location.href = `overview.html?payment_id=${paymentResult.paymentID}`;
         } catch (error) {
             statusMessage.textContent = error.message;

@@ -5,7 +5,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param);
     }
-
+    //fucntion to get the details of reservation(payment)
     async function validatePaymentAndFetchReservationId(paymentId) {
       try {
         const response = await fetch(`${apiBaseUrl}/payments/${paymentId}`);
@@ -21,7 +21,7 @@
         return null;
       }
     }
-
+    //fucntion to get other details of reservation
     async function fetchReservationDetails(reservationId) {
       try {
         const response = await fetch(`${apiBaseUrl}/get_reservations_by_id/${reservationId}`);
@@ -37,7 +37,7 @@
         return null;
       }
     }
-
+    //function to get the room details
     async function fetchReservationRoomDetails(reservationId) {
       try {
         const response = await fetch(`${apiBaseUrl}/reservation_rooms/${reservationId}`);
@@ -53,7 +53,7 @@
         return null;
       }
     }
-
+    //function to get the hotel details
     async function fetchHotelDetails(hotelId) {
       try {
         const response = await fetch(`${apiBaseUrl}/get_hotel_by_id/${hotelId}`);
@@ -69,7 +69,7 @@
         return null;
       }
     }
-
+    //assigning all the const
     async function loadReservationDetails() {
       const paymentId = getQueryParam('payment_id');
       if (!paymentId) {
@@ -87,7 +87,7 @@
       const reservationDetails = await fetchReservationDetails(reservationID);
       const roomDetails = await fetchReservationRoomDetails(reservationID);
       const hotelDetails = await fetchHotelDetails(roomDetails.hotelID);
-
+      //putting it in the page
       if (reservationDetails && roomDetails && hotelDetails) {
         document.getElementById('reservation-details').classList.add('hidden');
         document.getElementById('details-container').classList.remove('hidden');

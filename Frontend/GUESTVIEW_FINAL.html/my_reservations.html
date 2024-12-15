@@ -15,23 +15,23 @@
     </button>
   </div>
 
-  <!-- Main Content -->
+  
   <div class="container mx-auto px-4 py-10">
     <div id="reservations-container" class="space-y-6">
-      <!-- Placeholder for reservations -->
+    
       <p id="loading-indicator" class="text-center text-gray-600 dark:text-gray-400">Loading your reservations...</p>
     </div>
 
-    <!-- No Reservations Message -->
+   
     <div id="no-reservations" class="hidden text-center text-gray-600 dark:text-gray-400">
       <p>You have no reservations yet.</p>
     </div>
   </div>
 
   <script>
-    const apiBaseUrl = "http://localhost:8000"; // Replace with your API base URL
+    const apiBaseUrl = "http://localhost:8000"; 
 
-    // Function to fetch and display reservations
+  
     async function loadReservations() {
       const guestId = getGuestIdFromSession();
 
@@ -51,13 +51,13 @@
       }
     }
 
-    // Function to render reservations dynamically
+    // reder it dynamically
     function renderReservations(reservations) {
       const container = document.getElementById('reservations-container');
       const loadingIndicator = document.getElementById('loading-indicator');
       const noReservations = document.getElementById('no-reservations');
 
-      // Hide loading indicator
+      
       loadingIndicator.classList.add('hidden');
 
       if (reservations.length === 0) {
@@ -69,7 +69,7 @@
         const reservationCard = document.createElement('div');
         reservationCard.className = "bg-white dark:bg-gray-900 shadow-lg rounded-lg p-6";
 
-        // Base reservation details
+        //assigning the data for reservation
         let reservationContent = `
           <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Reservation ID: ${reservation.reservationID}</h3>
           <p class="text-gray-600 dark:text-gray-400 mt-2">Hotel ID: <span class="font-medium text-gray-800 dark:text-gray-100">${reservation.hotelID}</span></p>
@@ -80,7 +80,7 @@
           <p class="text-gray-600 dark:text-gray-400 mt-2">Status: <span class="font-medium text-${reservation.status === 'Approved' ? 'green' : 'yellow'}-600 dark:text-${reservation.status === 'Approved' ? 'green' : 'yellow'}-400">${reservation.status}</span></p>
         `;
 
-        // Add conditional buttons based on status
+        // diffrerent divs for each status
         if (reservation.status === 'Pending') {
           reservationContent += `
             <div class="mt-4">
@@ -136,7 +136,7 @@
         }
 
         alert("Reservation cancelled successfully.");
-        location.reload(); // Reload the page to update the reservation list
+        location.reload(); //reload to make changes
       } catch (error) {
         console.error("Error cancelling reservation:", error);
         alert("Failed to cancel reservation. Please try again.");
@@ -145,17 +145,15 @@
 
     // Function to continue to payment
     function continueToPayment(reservationId) {
-      // Redirect to payments page with reservationID in query string
       window.location.href = `payments.html?reservationID=${reservationId}`;
     }
 
     // Function to view a reservation
     function viewReservation(reservationId) {
-      // Redirect to a reservation details page (e.g., reservation.html?reservation_id=123)
       window.location.href = `reservation.html?reservation_id=${reservationId}`;
     }
 
-    // Placeholder function to simulate guest ID fetching
+  
     function getGuestIdFromSession() {
       const guestId = localStorage.getItem('userId');
       if (!guestId) {
@@ -168,10 +166,10 @@
 
     // Redirect to dashboard
     function redirectToDashboard() {
-      window.location.href = "dashboard.html"; // Replace with your dashboard page URL
+      window.location.href = "dashboard.html"; 
     }
 
-    // Load reservations on page load
+    
     window.onload = loadReservations;
   </script>
 </body>

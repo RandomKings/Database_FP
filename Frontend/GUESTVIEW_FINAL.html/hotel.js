@@ -1,6 +1,6 @@
 const apiBaseUrl = "http://localhost:8000";
 
-// Function to fetch hotels from the API
+//fetching the hotels function
 async function fetchHotels() {
     try {
         const response = await fetch(`${apiBaseUrl}/get_all_hotels/`);
@@ -16,10 +16,10 @@ async function fetchHotels() {
     }
 }
 
-// Function to generate hotel cards dynamically
+//input the retreived hotels dynamically
 async function generateHotelCards() {
     const hotelList = document.getElementById('hotel-list');
-    hotelList.innerHTML = ''; // Clear existing cards
+    hotelList.innerHTML = ''; 
 
     const hotels = await fetchHotels();
 
@@ -42,13 +42,13 @@ async function generateHotelCards() {
     });
 }
 
-// Function to navigate to the room selection page with hotel_id
+
 function selectHotel(hotelId) {
-    // Redirect to the room selection page with the hotel ID in the query string
+
     window.location.href = `room_details.html?hotel_id=${hotelId}`;
 }
 
-// Initialize hotel selection page
+
 function initHotelSelection() {
     window.onload = generateHotelCards;
 }

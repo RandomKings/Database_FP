@@ -1,17 +1,17 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const apiBaseUrl = "http://localhost:8000";
 
-    // Parse query parameters from the URL
+    
     const params = new URLSearchParams(window.location.search);
 
-    // Extract data from query parameters
+    // get the data from previous page
     const hotelId = params.get("hotel_id");
     const roomId = params.get("room_id");
     const roomType = params.get("room_type");
     const roomStatus = params.get("room_status");
     const totalPrice = params.get("total_price");
 
-    // Populate fields with the extracted data
+    //input data into the page
     if (hotelId) {
         document.getElementById("hotelID").value = hotelId;
         document.getElementById("hotelID").readOnly = true;
@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("total_price").readOnly = true;
     }
 
-    // Fetch guest name using the guestID from local storage
-    const guestId = localStorage.getItem("userId"); // Retrieve guestID from local storage
+    // get the userid
+    const guestId = localStorage.getItem("userId"); 
     if (!guestId) {
         alert("Guest ID not found in local storage.");
         return;
@@ -62,14 +62,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         alert("Failed to fetch guest details. Please try again.");
     }
 
-    // Submit the reservation form
+    
     const form = document.getElementById("combined-form");
     form.addEventListener("submit", async (event) => {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault(); 
 
         document.getElementById("result").textContent = "Submitting...";
 
-        // Step 1: Create the Reservation
+        // first create the reservation details
         const reservationData = {
             check_in_date: document.getElementById("check_in_date").value,
             check_out_date: document.getElementById("check_out_date").value,
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         };
 
         try {
-            // API call to create the reservation
+            // create it
             const reservationResponse = await fetch(`${apiBaseUrl}/create_reservations/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const reservationResult = await reservationResponse.json();
             const reservationID = reservationResult.reservationID;
 
-            // Step 2: Create the Reservation Room
+            // then create the resevation for the room
             const reservationRoomData = {
                 reservationID: reservationID,
                 roomID: parseInt(document.getElementById("roomID").value),
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const reservationRoomResult = await reservationRoomResponse.json();
 
-            // Step 3: Update Room Status
+            // finally uopdate the status
             const updateRoomResponse = await fetch(
                 `${apiBaseUrl}/change_room_status/${reservationRoomData.hotelID}/${reservationRoomData.roomID}?status=Reserved`,
                 {
@@ -130,10 +130,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const updatedRoomResult = await updateRoomResponse.json();
 
-            // Redirect to payment.html after successful reservation
+            
             window.location.href = `payments.html?reservationID=${reservationID}`;
         } catch (error) {
-            // Handle errors and display the error message
+           
             document.getElementById("result").textContent = `Error: ${error.message}`;
             console.error("Submission Error:", error);
         }

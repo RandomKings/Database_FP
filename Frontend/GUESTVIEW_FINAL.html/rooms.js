@@ -1,6 +1,6 @@
 const apiBaseUrl = "http://localhost:8000";
 
-// Function to get query parameter value
+
 function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
@@ -41,16 +41,16 @@ async function fetchRoomDetailsByType(roomType) {
 // Function to generate room cards dynamically
 async function generateRoomCards() {
     const roomList = document.getElementById('room-list');
-    roomList.innerHTML = ''; // Clear existing cards
+    roomList.innerHTML = ''; 
 
-    // Get the selected hotel ID from the query string
+   
     const hotelId = getQueryParam('hotel_id');
     if (!hotelId) {
         alert('No hotel selected.');
         return;
     }
 
-    // Fetch all room types for the selected hotel
+    
     const roomTypes = await fetchRoomTypes(hotelId);
 
     // Iterate over room types and fetch details for each
@@ -58,10 +58,10 @@ async function generateRoomCards() {
         const roomDetails = await fetchRoomDetailsByType(roomType.room_type);
         if (!roomDetails) continue;
 
-        // Check if the room is booked or available
+        
         const isBooked = roomType.status.toLowerCase() === 'booked';
 
-        // Create a room card for each room type
+        
         const roomCard = document.createElement('div');
         roomCard.className = 'room-card bg-white rounded-lg shadow-md py-10 px-20 hover:shadow-lg transition-shadow';
 
@@ -73,7 +73,7 @@ async function generateRoomCards() {
             <p class="text-gray-600 mt-2">Status: <span class="font-medium ${isBooked ? 'text-red-500' : 'text-green-500'}">${roomType.status}</span></p>
         `;
 
-        // Add "Book Room" button only if the room is available
+    
         if (!isBooked) {
             const bookButton = document.createElement('button');
             bookButton.className = 'mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors';
@@ -92,9 +92,9 @@ async function generateRoomCards() {
     }
 }
 
-// Function to redirect to submit reservation page
+
 function redirectToReservation(hotelId, roomId, roomType, roomStatus, price) {
-    // Redirect to submit reservation page with all selected details in the query string
+   
     const params = new URLSearchParams({
         hotel_id: hotelId,
         room_id: roomId,
@@ -105,7 +105,6 @@ function redirectToReservation(hotelId, roomId, roomType, roomStatus, price) {
     window.location.href = `reservation.html?${params.toString()}`;
 }
 
-// Initialize room selection page
 function initRoomSelection() {
     window.onload = generateRoomCards;
 }

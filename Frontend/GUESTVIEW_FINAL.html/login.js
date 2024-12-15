@@ -8,40 +8,40 @@ const firebaseConfig = {
     appId: "1:203684596661:web:d5ea0c48bca5e1865e67fc"
 };
 
-// Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const auth = app.auth(); // Initialize auth
 
-// Helper function to set userId globally in local storage
+const app = firebase.initializeApp(firebaseConfig);
+const auth = app.auth(); 
+
+//store the userid for easier access
 function setGlobalUserId(userId) {
     localStorage.setItem("userId", userId);
 }
 
-// Helper function to get the global userId
+//gets the userid
 function getGlobalUserId() {
     return localStorage.getItem("userId");
 }
 
-// Prevent duplicate event listeners
+
 if (!window.loginFormListenerAdded) {
     window.loginFormListenerAdded = true;
 
-    let isLoggingIn = false; // Guard for duplicate submissions
+    let isLoggingIn = false; 
 
     document.getElementById('login-form').addEventListener('submit', async (event) => {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault(); 
 
-        if (isLoggingIn) return; // Block duplicate submissions
+        if (isLoggingIn) return; 
         isLoggingIn = true;
 
         const submitButton = document.querySelector('button[type="submit"]');
         const messageElement = document.getElementById('message');
-        submitButton.disabled = true; // Disable submit button
+        submitButton.disabled = true;
 
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value.trim();
 
-        // Basic validation
+        
         if (!email || !password) {
             messageElement.textContent = "Please fill in all fields.";
             resetState();
@@ -49,14 +49,13 @@ if (!window.loginFormListenerAdded) {
         }
 
         try {
-            // Log in user with Firebase
+            
             const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
             
-            // Store the user UID globally in local storage
+           
             const userId = userCredential.user.uid;
-            setGlobalUserId(userId); // Save userId globally
-            
-            // Redirect to dashboard or desired page
+            setGlobalUserId(userId); 
+           
             messageElement.textContent = "Login successful!";
             window.location.href = "dashboard.html";
 
