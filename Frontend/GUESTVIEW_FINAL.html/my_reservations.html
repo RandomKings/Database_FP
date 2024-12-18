@@ -107,41 +107,72 @@
       });
     }
 
-    // Function to cancel a reservation
-    async function cancelReservation(reservationId) {
-      const reason = prompt("Please enter a reason for cancellation:");
-      if (!reason) {
-        alert("Cancellation reason is required.");
-        return;
-      }
+   // Function to update the reservation status
+async function updateReservationStatus(reservationID, status) {
+  const statusUpdateData = {
+    reservation_status: status,
+  };
 
-      const cancellationData = {
-        cancellation_date: new Date().toISOString().split("T")[0],
-        reason: reason,
-        reservationID: reservationId
-      };
+  try {
+    const response = await fetch(`${apiBaseUrl}/update_reservation_status/${reservationID}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(statusUpdateData),
+    });
 
-      try {
-        const response = await fetch(`${apiBaseUrl}/cancellations/`, {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(cancellationData),
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.detail || 'Error creating cancellation.');
-        }
-
-        alert("Reservation cancelled successfully.");
-        location.reload(); //reload to make changes
-      } catch (error) {
-        console.error("Error cancelling reservation:", error);
-        alert("Failed to cancel reservation. Please try again.");
-      }
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Error updating reservation status.');
     }
+
+    console.log("Reservation status updated successfully.");
+  } catch (error) {
+    console.error("Error updating reservation status:", error);
+    throw error; // Re-throw error for handling in calling function
+  }
+}
+
+// Function to cancel a reservation
+async function cancelReservation(reservationId) {
+  const reason = prompt("Please enter a reason for cancellation:");
+  if (!reason) {
+    alert("Cancellation reason is required.");
+    return;
+  }
+
+  const cancellationData = {
+    cancellation_date: new Date().toISOString().split("T")[0],
+    reason: reason,
+    reservationID: reservationId,
+  };
+
+  try {
+    // Create cancellation entry
+    const response = await fetch(`${apiBaseUrl}/cancellations/`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cancellationData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Error creating cancellation.');
+    }
+
+    // Update the reservation status to "Cancelled"
+    await updateReservationStatus(reservationId, "Cancelled");
+
+    alert("Reservation cancelled successfully.");
+    location.reload(); // Reload to reflect changes
+  } catch (error) {
+    console.error("Error cancelling reservation:", error);
+    alert("Failed to cancel reservation. Please try again.");
+  }
+}
 
     // Function to continue to payment
     function continueToPayment(reservationId) {

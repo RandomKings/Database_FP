@@ -6,176 +6,183 @@
     <title>Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-
-    <!-- Header -->
-    <header class="bg-blue-600 text-white py-4 shadow">
-        <div class="container mx-auto flex justify-between items-center px-4">
-            <h1 class="text-2xl font-bold">Admin Dashboard</h1>
-            <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
-                Logout
-            </button>
-        </div>
-    </header>
+<body class="bg-gray-100 min-h-screen flex">
+    
+    <!-- Sidebar -->
+    <aside class="bg-gray-800 text-white w-64 flex-shrink-0 p-4">
+        <h2 class="text-xl font-bold mb-6">Admin Dashboard</h2>
+        <nav>
+            <ul>
+                <li class="mb-4">
+                    <button class="w-full text-left text-gray-200 hover:text-white hover:bg-gray-700 py-2 px-3 rounded"
+                        onclick="showSection('hotels')">
+                        Hotels
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-left text-gray-200 hover:text-white hover:bg-gray-700 py-2 px-3 rounded"
+                        onclick="showSection('guests')">
+                        Guests
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </aside>
 
     <!-- Main Content -->
-    <main class="container mx-auto p-4 flex-grow">
-        <!-- Hotels Section -->
-        <section class="bg-white shadow rounded-lg p-6 mb-6">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Hotels</h2>
-            <table class="w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr class="bg-gray-200">
-                        <th class="border border-gray-300 px-4 py-2 text-left">Hotel ID</th>
-                        <th class="border border-gray-300 px-4 py-2 text-left">Hotel Name</th>
-                        <th class="border border-gray-300 px-4 py-2 text-left">City</th>
-                        <th class="border border-gray-300 px-4 py-2 text-left">Rating</th>
-                        <th class="border border-gray-300 px-4 py-2 text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="hotels-table-body">
-                    <!-- Dynamic data will be inserted here -->
-                </tbody>
-            </table>
-        </section>
+    <div class="flex-grow flex flex-col">
+        
+        <!-- Header -->
+        <header class="bg-blue-600 text-white py-4 shadow">
+            <div class="container mx-auto flex justify-between items-center px-4">
+            </div>
+        </header>
 
-        <!-- Rooms Section -->
-        <section id="rooms-section" class="bg-white shadow rounded-lg p-6 hidden">
-            <h2 id="rooms-title" class="text-xl font-semibold text-gray-700 mb-4"></h2>
-            <table class="w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr class="bg-gray-200">
-                        <th class="border border-gray-300 px-4 py-2 text-left">Room ID</th>
-                        <th class="border border-gray-300 px-4 py-2 text-left">Room Type</th>
-                        <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
-                        <th class="border border-gray-300 px-4 py-2 text-center">Edit Status</th>
-                        <th class="border border-gray-300 px-4 py-2 text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="rooms-table-body">
-                    <!-- Dynamic data will be inserted here -->
-                </tbody>
-            </table>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-4 text-center">
-        <p>&copy; 2024 Hotel Reservation System</p>
-    </footer>
-
-    <!-- JavaScript -->
-    <script>
-        const apiBaseUrl = 'http://localhost:8000';
-
-        // Fetch hotels data
-        async function fetchHotels() {
-            try {
-                const response = await fetch(`${apiBaseUrl}/get_all_hotels/`);
-                if (!response.ok) throw new Error('Failed to fetch hotels.');
-                
-                const hotels = await response.json();
-                const hotelsTableBody = document.getElementById('hotels-table-body');
-                hotelsTableBody.innerHTML = '';
-
-                hotels.forEach(hotel => {
-                    hotelsTableBody.innerHTML += `
-                        <tr>
-                            <td class="border border-gray-300 px-4 py-2">${hotel.hotelID}</td>
-                            <td class="border border-gray-300 px-4 py-2">${hotel.hotel_name}</td>
-                            <td class="border border-gray-300 px-4 py-2">${hotel.city}</td>
-                            <td class="border border-gray-300 px-4 py-2">${hotel.rating}</td>
-                            <td class="border border-gray-300 px-4 py-2 text-center">
-                                <button class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded" onclick="viewRooms(${hotel.hotelID}, '${hotel.hotel_name}')">View Rooms</button>
-                            </td>
+        <!-- Content -->
+        <main class="container mx-auto p-4 flex-grow">
+            <!-- Hotels Section -->
+            <section id="hotels-section" class="bg-white shadow rounded-lg p-6 mb-6 hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-700">Hotels</h2>
+                    <button 
+                    class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded" 
+                    onclick="showAddHotelModal()">
+                    Add Hotel
+                </button>
+                </div>
+                <table class="w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 px-4 py-2 text-left">Hotel ID</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Hotel Name</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">City</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Rating</th>
+                            <th class="border border-gray-300 px-4 py-2 text-center">Actions</th>
                         </tr>
-                    `;
-                });
-            } catch (error) {
-                console.error('Error fetching hotels:', error);
-            }
-        }
+                    </thead>
+                    <tbody id="hotels-table-body">
+                        <!-- Dynamic data will be inserted here -->
+                    </tbody>
+                </table>
+            </section>
 
-        // Fetch rooms for a hotel
-        async function viewRooms(hotelID, hotelName) {
-            try {
-                const response = await fetch(`${apiBaseUrl}/get_rooms/${hotelID}`);
-                if (!response.ok) throw new Error('Failed to fetch rooms.');
-
-                const rooms = await response.json();
-                const roomsTableBody = document.getElementById('rooms-table-body');
-                const roomsTitle = document.getElementById('rooms-title');
-
-                roomsTitle.textContent = `Rooms in ${hotelName}`;
-                roomsTableBody.innerHTML = '';
-
-                rooms.forEach(room => {
-                    const isDeletable = room.status !== 'Booked' && room.status !== 'Reserved';
-
-                    roomsTableBody.innerHTML += `
-                        <tr>
-                            <td class="border border-gray-300 px-4 py-2">${room.roomID}</td>
-                            <td class="border border-gray-300 px-4 py-2">${room.room_type}</td>
-                            <td class="border border-gray-300 px-4 py-2">${room.status}</td>
-                            <td class="border border-gray-300 px-4 py-2 text-center">
-                                <select class="border rounded px-2 py-1" onchange="updateRoomStatus(${hotelID}, ${room.roomID}, this.value)">
-                                    <option value="Available" ${room.status === 'Available' ? 'selected' : ''}>Available</option>
-                                    <option value="Booked" ${room.status === 'Booked' ? 'selected' : ''}>Booked</option>
-                                    <option value="Under Maintenance" ${room.status === 'Under Maintenance' ? 'selected' : ''}>Under Maintenance</option>
-                                    <option value="Reserved" ${room.status === 'Reserved' ? 'selected' : ''}>Reserved</option>
-                                </select>
-                            </td>
-                            <td class="border border-gray-300 px-4 py-2 text-center">
-                                <button class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded" ${!isDeletable ? 'disabled' : ''} onclick="deleteRoom(${hotelID}, ${room.roomID}, '${room.status}')">
-                                    Delete
-                                </button>
-                            </td>
+            <!-- Guests Section -->
+            <section id="guests-section" class="bg-white shadow rounded-lg p-6 mb-6 hidden">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Guests</h2>
+                <table class="w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 px-4 py-2 text-left">Guest ID</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Name</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Email</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Phone</th>
+                            <th class="border border-gray-300 px-4 py-2 text-center">Actions</th>
                         </tr>
-                    `;
-                });
+                    </thead>
+                    <tbody id="guests-table-body">
+                        <!-- Dynamic data will be inserted here -->
+                    </tbody>
+                </table>
+            </section>
+            <!-- Room Section -->
+            <section id="rooms-section" class="bg-white shadow rounded-lg p-6 mb-6 hidden">
+                <h2 id="rooms-title" class="text-xl font-semibold text-gray-700 mb-4">Rooms</h2>
+                <table class="w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 px-4 py-2 text-left">Room ID</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Room Type</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rooms-table-body">
+                        <!-- Dynamic data will be inserted here -->
+                    </tbody>
+                </table>
+            </section>
 
-                document.getElementById('rooms-section').classList.remove('hidden');
-            } catch (error) {
-                console.error('Error fetching rooms:', error);
-            }
-        }
+            <!-- Reservations Section -->
+            <section id="reservations-section" class="bg-white shadow rounded-lg p-6 mb-6 hidden">
+                <h2 id="reservations-title" class="text-xl font-semibold text-gray-700 mb-4">Reservations</h2>
+                <table class="w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 px-4 py-2 text-left">Reservation ID</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Room Number</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Check-in-Date</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Check-out-Date</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Price</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservations-table-body">
+                        <!-- Dynamic data will be inserted here -->
+                    </tbody>
+                </table>
+            </section>
+            <!-- ROOM MODAL -->
+            <div id="add-room-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+                    <h3 class="text-lg font-semibold mb-4">Add Room for <span id="modal-hotel-name"></span></h3>
+                    <div>
+                        <label for="room-type" class="block text-sm font-medium text-gray-700 mb-2">Select Room Type</label>
+                        <select id="room-type" class="block w-full border border-gray-300 rounded py-2 px-3">
+                            <option value="Single Room">Single Room</option>
+                            <option value="Double Room">Double Room</option>
+                            <option value="Suite">Suite</option>
+                            <option value="Deluxe Room">Deluxe Room</option>
+                        </select>
+                    </div>
+                    <div class="mt-4 flex justify-end">
+                        <button class="bg-gray-300 hover:bg-gray-400 text-black py-1 px-3 rounded mr-2" onclick="closeAddRoomModal()">Cancel</button>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded" onclick="addRoom()">Add Room</button>
+                    </div>
+                </div>
+            </div>
+             <!-- HOTEL MODAL -->
+             <div id="add-hotel-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+                    <h3 class="text-lg font-semibold mb-4">Add New Hotel</h3>
+                    <div class="mb-4">
+                        <label for="hotel-name" class="block text-sm font-medium text-gray-700 mb-2">Hotel Name</label>
+                        <input id="hotel-name" type="text" class="block w-full border border-gray-300 rounded py-2 px-3">
+                    </div>
+                    <div class="mb-4">
+                        <label for="city" class="block text-sm font-medium text-gray-700 mb-2">City</label>
+                        <input id="city" type="text" class="block w-full border border-gray-300 rounded py-2 px-3">
+                    </div>
+                    <div class="mb-4">
+                        <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                        <input id="address" type="text" class="block w-full border border-gray-300 rounded py-2 px-3">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input id="email" type="email" class="block w-full border border-gray-300 rounded py-2 px-3">
+                    </div>
+                    <div class="mb-4">
+                        <label for="phone-number" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                        <input id="phone-number" type="text" class="block w-full border border-gray-300 rounded py-2 px-3">
+                    </div>
+                    <div class="mb-4">
+                        <label for="rating" class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+                        <input id="rating" type="number" min="0" max="5" step="0.1" class="block w-full border border-gray-300 rounded py-2 px-3">
+                    </div>
+                    <div class="flex justify-end">
+                        <button class="bg-gray-300 hover:bg-gray-400 text-black py-1 px-3 rounded mr-2" onclick="closeAddHotelModal()">Cancel</button>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded" onclick="addHotel()">Add Hotel</button>
+                    </div>
+                </div>
+            </div>
+            
 
-        // Update room status
-        async function updateRoomStatus(hotelID, roomID, newStatus) {
-            const endpoint = `${apiBaseUrl}/change_room_status/${hotelID}/${roomID}?status=${encodeURIComponent(newStatus)}`;
-            try {
-                const response = await fetch(endpoint, { method: 'PUT' });
-                if (!response.ok) throw new Error('Failed to update room status.');
-                alert(`Room ${roomID} status updated to "${newStatus}".`);
-            } catch (error) {
-                console.error('Error updating room status:', error);
-                alert(`Error: ${error.message}`);
-            }
-        }
+        </main>
 
-        // Delete a room
-        async function deleteRoom(hotelID, roomID, status) {
-            if (status === 'Booked' || status === 'Reserved') {
-                alert(`Cannot delete room ${roomID} because it is "${status}".`);
-                return;
-            }
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-4 text-center">
+        </footer>
+    </div>
 
-            if (!confirm(`Are you sure you want to delete room ${roomID}?`)) return;
+<script src="admin.js"></script>
 
-            const endpoint = `${apiBaseUrl}/delete_rooms/${hotelID}/${roomID}`;
-            try {
-                const response = await fetch(endpoint, { method: 'DELETE' });
-                if (!response.ok) throw new Error('Failed to delete room.');
-                alert(`Room ${roomID} deleted successfully.`);
-                viewRooms(hotelID, `Hotel ${hotelID}`); // Refresh the table
-            } catch (error) {
-                console.error('Error deleting room:', error);
-                alert(`Error: ${error.message}`);
-            }
-        }
-
-        // Load hotels on page load
-        document.addEventListener('DOMContentLoaded', fetchHotels);
-    </script>
 </body>
 </html>

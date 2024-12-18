@@ -116,7 +116,6 @@ def delete_room_details(db: Session, room_type: str):
 # Create a Room
 def create_room(db: Session, room: schema.RoomCreate):
     new_room = database.Rooms(
-        roomID=room.roomID,
         hotelID=room.hotelID,
         status=room.status,
         room_type=room.room_type

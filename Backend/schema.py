@@ -40,7 +40,6 @@ class RoomDetailResponse(RoomDetailBase):
 
 # -------- Rooms Schema --------
 class RoomBase(BaseModel):
-    roomID: int
     hotelID: int
     status: str  # ENUM('Available', 'Booked', 'Under Maintenance', 'Reserved')
     room_type: Optional[str]  # Can be null due to foreign key constraints

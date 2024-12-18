@@ -50,7 +50,7 @@ async def get_hotel_by_name(hotel_name: str, db: Session = Depends(get_db)):
     return hotel
 
 # Get All Rooms for a Hotel
-@app.get("/get_rooms/{hotel_id}", response_model=list[schema.RoomBase], tags=["Rooms"])
+@app.get("/get_rooms/{hotel_id}", response_model=list[schema.RoomResponse], tags=["Rooms"])
 async def get_rooms_by_hotel(hotel_id: int, db: Session = Depends(get_db)):
     rooms = crud.get_rooms_by_hotel(db, hotel_id)
     return rooms

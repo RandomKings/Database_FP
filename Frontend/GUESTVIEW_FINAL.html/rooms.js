@@ -43,14 +43,12 @@ async function generateRoomCards() {
     const roomList = document.getElementById('room-list');
     roomList.innerHTML = ''; 
 
-   
     const hotelId = getQueryParam('hotel_id');
     if (!hotelId) {
         alert('No hotel selected.');
         return;
     }
 
-    
     const roomTypes = await fetchRoomTypes(hotelId);
 
     // Iterate over room types and fetch details for each
@@ -58,10 +56,9 @@ async function generateRoomCards() {
         const roomDetails = await fetchRoomDetailsByType(roomType.room_type);
         if (!roomDetails) continue;
 
-        
-        const isBooked = roomType.status.toLowerCase() === 'booked';
+        // Check if the room is booked or reserved
+        const isUnavailable = roomType.status.toLowerCase() === 'booked' || roomType.status.toLowerCase() === 'reserved'|| roomType.status.toLowerCase() === 'under maintenance';
 
-        
         const roomCard = document.createElement('div');
         roomCard.className = 'room-card bg-white rounded-lg shadow-md py-10 px-20 hover:shadow-lg transition-shadow';
 
@@ -70,11 +67,11 @@ async function generateRoomCards() {
             <p class="text-gray-600 mt-2">Price: <span class="font-medium">$${roomDetails.price}/night</span></p>
             <p class="text-gray-600 mt-2">Bed Type: <span class="font-medium">${roomDetails.bed_type}</span></p>
             <p class="text-gray-600 mt-2">Capacity: <span class="font-medium">${roomDetails.max_occupancy} persons</span></p>
-            <p class="text-gray-600 mt-2">Status: <span class="font-medium ${isBooked ? 'text-red-500' : 'text-green-500'}">${roomType.status}</span></p>
+            <p class="text-gray-600 mt-2">Status: <span class="font-medium ${isUnavailable ? 'text-red-500' : 'text-green-500'}">${roomType.status}</span></p>
         `;
 
-    
-        if (!isBooked) {
+        // Add a "Book Room" button only if the room is available
+        if (!isUnavailable) {
             const bookButton = document.createElement('button');
             bookButton.className = 'mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors';
             bookButton.textContent = 'Book Room';
