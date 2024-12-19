@@ -129,11 +129,21 @@
                     const isEditable = room.status !== 'Booked' && room.status !== 'Reserved';
                     const canDelete = room.status === 'Available' || room.status === 'Under Maintenance';
         
+                    const statusOptions = ['Available','Under Maintenance']
+                        .map(status => `<option value="${status}" ${status === room.status ? 'selected' : ''}>${status}</option>`)
+                        .join('');
+        
                     roomsTableBody.innerHTML += `
                         <tr>
                             <td class="border border-gray-300 px-4 py-2">${room.roomID}</td>
                             <td class="border border-gray-300 px-4 py-2">${room.room_type}</td>
-                            <td class="border border-gray-300 px-4 py-2">${room.status}</td>
+                            <td class="border border-gray-300 px-4 py-2">
+                                ${isEditable ? `
+                                    <select id="status-${room.roomID}" class="border border-gray-300 px-2 py-1 rounded">
+                                        ${statusOptions}
+                                    </select>
+                                ` : `<span>${room.status}</span>`}
+                            </td>
                             <td class="border border-gray-300 px-4 py-2 text-center">
                                 ${isEditable ? `
                                     <button class="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded" 
@@ -158,6 +168,7 @@
                 alert('An error occurred while fetching rooms. Please try again.');
             }
         }
+        
         
         
 
